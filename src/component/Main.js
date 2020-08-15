@@ -9,6 +9,7 @@
 
 import React, {useState} from 'react';
 import TodoList from './TodoList';
+import TodoForm from './TodoForm';
 // import PropTypes from 'prop-types';
 
 function Main() {
@@ -20,19 +21,30 @@ function Main() {
         { id: 5, title: 'We love Easy Frontend! 🥰' },
         { id: 6, title: 'They love Easy Frontend! 🚀' },
     ]);
-    
+
     function handleTodoClick(todo) {
-        debugger;
-        console.log(todo);
         const index = todoList.findIndex((x) => x.id === todo.id);
         const newTodoList = [...todoList];
+        // Todo by MongLV: Xóa các 1 phần tử tạo vị trí đó
         newTodoList.splice(index, 1);
         setTodoList(newTodoList);
     }
-    
+
+    function handleTodoFormSubmit(formValue) {
+        console.log(formValue);
+        const newTodo = {
+            id: todoList.length + 1,
+            ...formValue,
+        };
+        const newTodoList = [...todoList];
+        newTodoList.push(newTodo);
+        setTodoList(newTodoList)
+    }
+
     return(
         <div>
             <h1>Todo List React Hook</h1>
+            <TodoForm onSubmit={handleTodoFormSubmit} />
             <TodoList todos={todoList} onTodoClick={handleTodoClick} />
         </div>
     );
