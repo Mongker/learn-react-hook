@@ -14,6 +14,7 @@ import TodoForm from './TodoForm';
 import PostList from './PostList';
 import Pagination from './Pagination';
 import PostFiltersForm from "./PostFiltersForm";
+import Clock from './Clock';
 // import PropTypes from 'prop-types';
 
 function Main() {
@@ -36,6 +37,7 @@ function Main() {
         _page: 2,
         title_like: ''
     });
+
     useEffect(()=>{
         try {
             async function fetchPostList() {
@@ -92,13 +94,20 @@ function Main() {
     }
     return(
         <div>
-            <h1>Todo List React Hook</h1>
-            <PostFiltersForm onSubmit={handleFilterChange} />
-            <PostList post={postList} />
-            <Pagination onPageChange={handlePageChange} pagination={pagination} />
-
-            {/*<TodoForm onSubmit={handleTodoFormSubmit} />*/}
-            {/*<TodoList todos={todoList} onTodoClick={handleTodoClick} />*/}
+            <Clock />
+            <div style={{backgroundColor: '#71adab'}}>
+                <h1>API và vòng đời trong React Hook</h1>
+                <PostFiltersForm onSubmit={handleFilterChange} />
+                <PostList post={postList} />
+                <Pagination onPageChange={handlePageChange} pagination={pagination} />
+            </div>
+            <h3>---------------------------------------------------------------------------------</h3>
+            <div style={{backgroundColor: '#8d9c2b'}}>
+                <h1>Todo List React Hook</h1>
+                <TodoForm onSubmit={handleTodoFormSubmit} />
+                <TodoList todos={todoList} onTodoClick={handleTodoClick} />
+            </div>
+            <h1>-END-</h1>
         </div>
     );
 }

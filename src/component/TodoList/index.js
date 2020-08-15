@@ -22,8 +22,11 @@ function TodoList(props) {
         <div className="todo-list">
             {
                 todos.map((todo) => (
-                    <div key={todo.id} onClick={() => handleClick(todo)}>
+                    <div key={todo.id}>
                         {todo.title}
+                        <button style={{color: 'red'}}onClick={() => handleClick(todo)}>
+                            Delete
+                        </button>
                     </div>
                 ))
             }
