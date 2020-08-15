@@ -15,6 +15,9 @@ import PostList from './PostList';
 import Pagination from './Pagination';
 import PostFiltersForm from "./PostFiltersForm";
 import Clock from './Clock';
+import useClock from '../hooks/useClock';
+import App from './ColorBox/App';
+import useMagicColor from '../hooks/useMagicColor';
 // import PropTypes from 'prop-types';
 
 function Main() {
@@ -92,22 +95,30 @@ function Main() {
             title_like: newFilter.value,
         })
     }
+
+    const {timeString} = useClock();
+    const color = useMagicColor();
+    console.log('ket qua'+color);
     return(
         <div>
-            <Clock />
-            <div style={{backgroundColor: '#71adab'}}>
-                <h1>API và vòng đời trong React Hook</h1>
+            <div>
+                <h3>Custom Hooks</h3>
+                <Clock />
+                <h3 style={{color: color}}>{timeString}</h3>
+            </div>
+            <div style={{backgroundColor: '#90adab'}}>
+                <h3>API và vòng đời trong React Hook</h3>
                 <PostFiltersForm onSubmit={handleFilterChange} />
                 <PostList post={postList} />
                 <Pagination onPageChange={handlePageChange} pagination={pagination} />
             </div>
-            <h3>---------------------------------------------------------------------------------</h3>
-            <div style={{backgroundColor: '#8d9c2b'}}>
-                <h1>Todo List React Hook</h1>
+            <div style={{backgroundColor: '#86729c'}}>
+                <h3>Todo List React Hook</h3>
                 <TodoForm onSubmit={handleTodoFormSubmit} />
                 <TodoList todos={todoList} onTodoClick={handleTodoClick} />
             </div>
-            <h1>-END-</h1>
+            <App />
+            <h3>-END-</h3>
         </div>
     );
 }

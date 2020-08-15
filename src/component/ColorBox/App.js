@@ -34,7 +34,7 @@ function App() {
       localStorage.setItem('box_color', newColor);
     }
     return(
-        <div className={"color-box"} style={{backgroundColor: color}} onClick={handleBoxClick}>>
+        <div className={"color-box"} style={{backgroundColor: color}} onClick={handleBoxClick}>
             <h1>Lê Văn Mong học React Hook</h1>
         </div>
     );
