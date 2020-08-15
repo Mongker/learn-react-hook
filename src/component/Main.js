@@ -7,9 +7,13 @@
  * @university: UTT (Đại học Công Nghệ Giao Thông Vận Tải)
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import queryString from 'query-string'
 import TodoList from './TodoList';
 import TodoForm from './TodoForm';
+import PostList from './PostList';
+import Pagination from './Pagination';
+import PostFiltersForm from "./PostFiltersForm";
 // import PropTypes from 'prop-types';
 
 function Main() {
@@ -21,6 +25,35 @@ function Main() {
         { id: 5, title: 'We love Easy Frontend! 🥰' },
         { id: 6, title: 'They love Easy Frontend! 🚀' },
     ]);
+    const [postList, setPostList] = useState([]);
+    const [pagination, setPagination] = useState({
+        _page: 2,
+        _limit: 10,
+        _totalRows: 20,
+    });
+    const [filter, setFilter] = useState({
+        _limit: 10,
+        _page: 2,
+        title_like: ''
+    });
+    useEffect(()=>{
+        try {
+            async function fetchPostList() {
+                const paramsString = queryString.stringify(filter);
+                const requestUrl = `http://js-post-api.herokuapp.com/api/posts?${paramsString}`;
+                const response = await fetch(requestUrl);
+                const responseJSON = await response.json();
+                console.log({responseJSON});
+                const {data, pagination} = responseJSON;
+
+                setPostList(data);
+                setPagination(pagination);
+            }
+            fetchPostList();
+        } catch (e) {
+            console.log(e.message);
+        }
+    }, [filter]);
 
     function handleTodoClick(todo) {
         const index = todoList.findIndex((x) => x.id === todo.id);
@@ -41,11 +74,31 @@ function Main() {
         setTodoList(newTodoList)
     }
 
+    function handlePageChange(newPage) {
+        console.log(newPage);
+        setFilter({
+            ...filter,
+            _page: newPage,
+        })
+    }
+
+    function handleFilterChange(newFilter) {
+        console.log('Ky tu search: '+newFilter.value);
+        setFilter({
+            ...filter,
+            _page: 1,
+            title_like: newFilter.value,
+        })
+    }
     return(
         <div>
             <h1>Todo List React Hook</h1>
-            <TodoForm onSubmit={handleTodoFormSubmit} />
-            <TodoList todos={todoList} onTodoClick={handleTodoClick} />
+            <PostFiltersForm onSubmit={handleFilterChange} />
+            <PostList post={postList} />
+            <Pagination onPageChange={handlePageChange} pagination={pagination} />
+
+            {/*<TodoForm onSubmit={handleTodoFormSubmit} />*/}
+            {/*<TodoList todos={todoList} onTodoClick={handleTodoClick} />*/}
         </div>
     );
 }
